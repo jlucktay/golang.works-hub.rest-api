@@ -17,18 +17,6 @@ type Post struct {
 
 var posts []Post
 
-func main() {
-	router := mux.NewRouter()
-	posts = append(posts, Post{ID: "1", Title: "My first post", Body: "This is the content of my first post"})
-	posts = append(posts, Post{ID: "2", Title: "My second post", Body: "This is the content of my second post"})
-	router.HandleFunc("/posts", getPosts).Methods("GET")
-	router.HandleFunc("/posts", createPost).Methods("POST")
-	router.HandleFunc("/posts/{id}", getPost).Methods("GET")
-	router.HandleFunc("/posts/{id}", updatePost).Methods("PUT")
-	router.HandleFunc("/posts/{id}", deletePost).Methods("DELETE")
-	http.ListenAndServe(":8000", router)
-}
-
 func getPosts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
@@ -83,4 +71,16 @@ func deletePost(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	json.NewEncoder(w).Encode(books)
+}
+
+func main() {
+	router := mux.NewRouter()
+	posts = append(posts, Post{ID: "1", Title: "My first post", Body: "This is the content of my first post"})
+	posts = append(posts, Post{ID: "2", Title: "My second post", Body: "This is the content of my second post"})
+	router.HandleFunc("/posts", getPosts).Methods("GET")
+	router.HandleFunc("/posts", createPost).Methods("POST")
+	router.HandleFunc("/posts/{id}", getPost).Methods("GET")
+	router.HandleFunc("/posts/{id}", updatePost).Methods("PUT")
+	router.HandleFunc("/posts/{id}", deletePost).Methods("DELETE")
+	http.ListenAndServe(":8000", router)
 }
